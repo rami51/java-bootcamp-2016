@@ -208,10 +208,11 @@ Commit your practice code.
 1. Create and build a simple Maven project:
 2. Customize the Maven project by adding new dependencies: log4j, junit.
 3. Create a simple unit test under src/test/java and run it. Then skip the unit test by property or by adding the skipping test configuration to your pom.xml file.
+4. Create a Simple Web Application
 
 #####Key Points:#####
 
-1,2,3
+1,2,4
 
 #####Commit:#####
 
@@ -267,7 +268,7 @@ Note: Do not implement JPA or ORM. Services should return in memory data only.
 
 #####Key Points:#####
 
-2,4,7
+1,2,4
 
 #####Commit:#####
 
@@ -391,7 +392,7 @@ Commit your practice code.
 
 ###Your First Project Starts Now!
 
-####Final Project (2 days)
+####Final Project (3 days)
 Create a functional shopping cart (just REST api). The minimum features to be completed are:
 
   - User registration and login.
