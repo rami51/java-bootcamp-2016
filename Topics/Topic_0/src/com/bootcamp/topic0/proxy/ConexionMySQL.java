@@ -1,19 +1,18 @@
-package Topic_0.AbstractFactory;
+package com.bootcamp.topic0.proxy;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConexionMySQL extends SQL {
+public class ConexionMySQL {
 	private static String host="localhost";
 	private static String user="Ramiro";
 	private static String pass="ramiro";
-	private static String dbname = "mysqlBD";
+	private static String dbname = "oracleBD";
 	private String dbDriver="com.mysql.jdbc.Driver";
 	private Connection conexion;
-	private static ConexionMySQL instancia;
 
-	private ConexionMySQL(){
+	public ConexionMySQL(){
 		try {
 			Class.forName(dbDriver);
 			conexion = null;
@@ -23,12 +22,6 @@ public class ConexionMySQL extends SQL {
 		}
 	}
 	
-	public static ConexionMySQL getInstancia() {
-		if(instancia==null) instancia = new ConexionMySQL();
-		return instancia;
-	}
-	
-	@Override
 	public Connection getConexion() {
 		try {
 			if(conexion==null || conexion.isClosed())
@@ -40,7 +33,6 @@ public class ConexionMySQL extends SQL {
 		return conexion;
 	}
 	
-	@Override
 	public void releaseConexion() {
 		try {
 			if(!conexion.isClosed()) conexion.close();

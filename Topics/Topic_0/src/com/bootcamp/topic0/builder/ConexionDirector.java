@@ -1,4 +1,4 @@
-package Topic_0.Builder;
+package com.bootcamp.topic0.builder;
 
 public class ConexionDirector {
 	private ConexionBDBuilder builder = null;

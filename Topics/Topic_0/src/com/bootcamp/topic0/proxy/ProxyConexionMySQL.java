@@ -1,4 +1,4 @@
-package Topic_0.Proxy;
+package com.bootcamp.topic0.proxy;
 
 import java.sql.Connection;
 

@@ -1,4 +1,4 @@
-package Topic_0.Builder;
+package com.bootcamp.topic0.builder;
 
 public interface ConexionBDBuilder {
 	public void buildHost();

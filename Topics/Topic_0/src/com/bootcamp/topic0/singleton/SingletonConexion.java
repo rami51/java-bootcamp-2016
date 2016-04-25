@@ -1,4 +1,4 @@
-package Topic_0.Singleton;
+package com.bootcamp.topic0.singleton;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

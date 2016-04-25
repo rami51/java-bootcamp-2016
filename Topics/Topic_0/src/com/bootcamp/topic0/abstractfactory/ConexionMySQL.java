@@ -1,19 +1,19 @@
-package Topic_0.AbstractFactory;
+package com.bootcamp.topic0.abstractfactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConexionOracle extends SQL{
+public class ConexionMySQL extends SQL {
 	private static String host="localhost";
 	private static String user="Ramiro";
 	private static String pass="ramiro";
-	private static String dbname = "oracleBD";
-	private String dbDriver="com.oracle.jdbc.Driver";
+	private static String dbname = "mysqlBD";
+	private String dbDriver="com.mysql.jdbc.Driver";
 	private Connection conexion;
-	private static ConexionOracle instancia;
+	private static ConexionMySQL instancia;
 
-	private ConexionOracle(){
+	private ConexionMySQL(){
 		try {
 			Class.forName(dbDriver);
 			conexion = null;
@@ -23,8 +23,8 @@ public class ConexionOracle extends SQL{
 		}
 	}
 	
-	public static ConexionOracle getInstancia() {
-		if(instancia==null) instancia = new ConexionOracle();
+	public static ConexionMySQL getInstancia() {
+		if(instancia==null) instancia = new ConexionMySQL();
 		return instancia;
 	}
 	
@@ -32,7 +32,7 @@ public class ConexionOracle extends SQL{
 	public Connection getConexion() {
 		try {
 			if(conexion==null || conexion.isClosed())
-				conexion = DriverManager.getConnection("jdbc:oracle://" + host + "/" + dbname, user, pass);
+				conexion = DriverManager.getConnection("jdbc:mysql://" + host + "/" + dbname, user, pass);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

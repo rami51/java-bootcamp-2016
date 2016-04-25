@@ -1,15 +1,15 @@
-package Topic_0.Builder;
+package com.bootcamp.topic0.builder;
 
-public class MySQLConexionBuilder implements ConexionBDBuilder {
+public class OracleConexionBuilder implements ConexionBDBuilder{
 	private ConexionBD con;
 	
-	public MySQLConexionBuilder() {
+	public OracleConexionBuilder(){
 		con = new ConexionBD();
 	}
-
+	
 	@Override
 	public void buildHost() {
-		con.setHost("localhost");
+		con.setHost("localhost");		
 	}
 
 	@Override
@@ -19,24 +19,22 @@ public class MySQLConexionBuilder implements ConexionBDBuilder {
 
 	@Override
 	public void buildPass() {
-		con.setPass("ramiro");		
+		con.setPass("ramiro");
 	}
 
 	@Override
 	public void buildDbmotor() {
-		con.setDbmotor("mysql");		
+		con.setDbmotor("oracle");		
 	}
 
 	@Override
 	public void buildDbname() {
-		con.setDbname("mysqlBD");		
+		con.setDbname("oracleBD");		
 	}
 
 	@Override
 	public ConexionBD getConexionBD() {
 		return con;
-		
 	}
-	
 
 }

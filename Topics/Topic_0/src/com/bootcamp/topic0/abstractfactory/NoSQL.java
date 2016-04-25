@@ -1,4 +1,4 @@
-package Topic_0.AbstractFactory;
+package com.bootcamp.topic0.abstractfactory;
 
 public abstract class NoSQL {
 	public abstract String getConexion();
