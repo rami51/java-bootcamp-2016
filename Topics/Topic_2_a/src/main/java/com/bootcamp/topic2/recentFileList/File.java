@@ -1,3 +1,4 @@
+package com.bootcamp.topic2.recentFileList;
 
 public class File {
 	private boolean open = false; //is false when it's closed, and is true when it's opened.

@@ -1,7 +1,12 @@
+package com.bootcamp.topic2.recentFileListTest;
+
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.bootcamp.topic2.recentFileList.File;
+import com.bootcamp.topic2.recentFileList.FileList;
 
 public class FileListTest {
 	FileList list;
