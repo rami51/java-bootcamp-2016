@@ -8,28 +8,33 @@ public class MySQLConexionBuilder implements ConexionBDBuilder {
 	}
 
 	@Override
-	public void buildHost() {
+	public ConexionBDBuilder buildHost() {
 		con.setHost("localhost");
+		return this;
 	}
 
 	@Override
-	public void buildUser() {
-		con.setUser("Ramiro");
+	public ConexionBDBuilder buildUser(String string) {
+		con.setUser(string);
+		return this;
 	}
 
 	@Override
-	public void buildPass() {
-		con.setPass("ramiro");		
+	public ConexionBDBuilder buildPass(String string) {
+		con.setPass(string);	
+		return this;
 	}
 
 	@Override
-	public void buildDbmotor() {
-		con.setDbmotor("mysql");		
+	public ConexionBDBuilder buildDbEngine() {
+		con.setDbmotor("mysql");
+		return this;
 	}
 
 	@Override
-	public void buildDbname() {
-		con.setDbname("mysqlBD");		
+	public ConexionBDBuilder buildDbname(String string) {
+		con.setDbname(string);	
+		return this;
 	}
 
 	@Override

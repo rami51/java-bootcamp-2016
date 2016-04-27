@@ -2,7 +2,7 @@ package com.bootcamp.topic0.proxy;
 
 import java.sql.Connection;
 
-public class ProxyConexionMySQL {
+public class ProxyConexionMySQL implements ConexionInterface {
 	ConexionMySQL instancia;
 	
 	public Connection getConexion(){
