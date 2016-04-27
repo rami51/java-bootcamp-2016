@@ -7,8 +7,10 @@ public class FactoriaSQL extends AbstractFactory {
 		if(nombre.equalsIgnoreCase("oracle")) return ConexionOracle.getInstancia();
 		return null;
 	}
-	public NoSQL getNoSQL(String nombre) {
-		return null;
+	public NoSQL getNoSQL(String nombre) throws Exception {
+		Exception e = new Exception("Class FactoriaSQL does not support this method of AbstractFactory.");
+		throw e;
 	}
 	
+	//Can I resolve the proposed problem with that? (Look above!)
 }
