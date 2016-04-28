@@ -56,7 +56,7 @@ public class Blog {
 		}
 		else {
 			ArrayList<Entry> recents = new ArrayList<Entry>();
-			for (int i = 0; i < numberOfPosts; i++) {
+			for (int i = this.size()-1; i > this.size()-numberOfPosts-1; i--) {
 				recents.add(postsList.get(i));
 			}
 			return new Blog(recents);
