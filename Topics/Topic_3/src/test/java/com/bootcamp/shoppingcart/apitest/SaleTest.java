@@ -20,8 +20,8 @@ SaleItem item2;
 	public void setUp() throws Exception {
 		ShoppingCart cart = ShoppingCartFactory.getShoppingCart();
 		//cart.add(new SaleItem(description, unitPrice, quantityOfThis));
-		item1 = new SaleItem("T-Shirt", 5, 2);
-		item2 = new SaleItem("Pants", 10, 1);
+		item1 = new SaleItem("T-Shirt", 5);
+		item2 = new SaleItem("Pants", 10);
 		cart.add(item1);
 		cart.add(item2);
 		sale = cart.buy();
@@ -29,7 +29,7 @@ SaleItem item2;
 
 	@Test
 	public void getTotalAmountTest() {
-		assertTrue(sale.getTotalAmount() == (double)20);
+		assertTrue(sale.getTotalAmount() == (double)15);
 	}
 	
 	@Test

@@ -17,15 +17,15 @@ public class ShoppingCartTest {
 	public void setUp() throws Exception {
 		cart = ShoppingCartFactory.getShoppingCart();
 		//cart.add(new SaleItem(description, unitPrice, quantityOfThis));
-		item = new SaleItem("T-Shirt", 5, 2);
+		item = new SaleItem("T-Shirt", 5);
 		cart.add(item);
-		cart.add(new SaleItem("Pants", 10, 1));
+		cart.add(new SaleItem("Pants", 10));
 	}
 
 	@Test
 	public void addAndGetTotalTest() {
-		cart.add(new SaleItem("Shoes", 15, 1));
-		assertTrue(cart.getTotal() == (double)35);
+		cart.add(new SaleItem("Shoes", 15));
+		assertTrue(cart.getTotal() == (double)30);
 	}
 	
 	@Test
@@ -38,12 +38,12 @@ public class ShoppingCartTest {
 	@Test
 	public void buyTest(){
 		Sale sale = cart.buy();
-		assertTrue(sale.getTotalAmount()== (double)20);
+		assertTrue(sale.getTotalAmount()== (double)15);
 	}
 	
 	@Test
 	public void cancelBuyTest(){
-		cart.cancelBuy();
+		cart.clearCart();
 		assertTrue(cart.getTotal()== 0);
 	}
 

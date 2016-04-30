@@ -5,6 +5,6 @@ public class ShoppingCartFactory {
 	}
 	
 	public static ShoppingCart getShoppingCart(){
-		return new ShoppingCartImp();
+		return new ShoppingCartService();
 	}
 }

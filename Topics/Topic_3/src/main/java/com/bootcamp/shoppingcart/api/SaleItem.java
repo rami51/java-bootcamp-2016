@@ -5,13 +5,13 @@ public class SaleItem {
 	private int idItem;
 	private String description;
 	private double unitPrice;
-	private int quantityOfThis;
 
 
-	public SaleItem(String description, double unitPrice, int quantityOfThis){
+
+	public SaleItem(String description, double unitPrice){
 		this.description = description;
 		this.unitPrice = unitPrice;
-		this.quantityOfThis = quantityOfThis;
+
 		this.idItem = ++lastId;
 	}
 
@@ -25,13 +25,5 @@ public class SaleItem {
 
 	public double getUnitPrice() {
 		return unitPrice;
-	}
-
-	public int getQuantityOfThis() {
-		return quantityOfThis;
-	}
-	
-	public double getAmount(){
-		return (unitPrice * (double)quantityOfThis);
 	}
 }

@@ -5,6 +5,6 @@ public interface ShoppingCart {
 	public boolean remove(SaleItem saleItem);
 	public SaleItem getItem(int idItem);
 	public Sale buy();
-	public void cancelBuy();
+	public void clearCart();
 	public double getTotal();
 }

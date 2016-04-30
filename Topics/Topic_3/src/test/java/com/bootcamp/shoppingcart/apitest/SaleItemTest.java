@@ -12,12 +12,12 @@ public class SaleItemTest {
 	SaleItem item;
 	@Before
 	public void setUp() throws Exception {
-		item = new SaleItem("A product", 10, 3);
+		item = new SaleItem("A product", 10);
 	}
 	
 	@Test
-	public void getAmountTest(){
-		assertTrue(30 == item.getAmount());
+	public void getUnitPriceTest(){
+		assertTrue(10 == item.getUnitPrice());
 	}
 
 }

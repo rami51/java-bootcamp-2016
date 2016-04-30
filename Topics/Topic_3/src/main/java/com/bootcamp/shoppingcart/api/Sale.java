@@ -1,6 +1,7 @@
 package com.bootcamp.shoppingcart.api;
 
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 public class Sale {
 	private ArrayList<SaleItem> saleItemList;
@@ -14,7 +15,7 @@ public class Sale {
 	public double getTotalAmount(){
 		if(totalAmount==0)
 			for (SaleItem saleItem : saleItemList)
-				totalAmount+=saleItem.getAmount();
+				totalAmount+=saleItem.getUnitPrice();
 		return totalAmount;
 	}
 	

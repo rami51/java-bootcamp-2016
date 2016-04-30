@@ -2,10 +2,10 @@ package com.bootcamp.shoppingcart.api;
 
 import java.util.ArrayList;
 
-public class ShoppingCartImp implements ShoppingCart{
+public class ShoppingCartService implements ShoppingCart{
 	private ArrayList<SaleItem> saleItemList;
 	
-	protected ShoppingCartImp(){
+	protected ShoppingCartService(){
 		saleItemList = new ArrayList<SaleItem>(); 
 	}
 
@@ -21,14 +21,10 @@ public class ShoppingCartImp implements ShoppingCart{
 		return new Sale(saleItemList);
 	}
 
-	public void cancelBuy() {
-		saleItemList.clear();
-	}
-
 	public double getTotal() {
 		int totalAmount=0;
 		for (SaleItem saleItem : saleItemList)
-			totalAmount+=saleItem.getAmount();
+			totalAmount+=saleItem.getUnitPrice();
 		return totalAmount;
 	}
 
@@ -39,6 +35,10 @@ public class ShoppingCartImp implements ShoppingCart{
 			}
 		}
 		return null;
+	}
+
+	public void clearCart() {
+		saleItemList.clear();		
 	}
 	
 }
