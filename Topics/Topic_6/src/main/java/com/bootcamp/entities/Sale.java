@@ -4,17 +4,15 @@ import java.util.ArrayList;
 
 public class Sale {
 	private ArrayList<SaleItem> saleItemList;
-	private double totalAmount=0;
+	private double totalAmount;
 	
 	//This constructor is protected because the client only can has a sale if he use a ShoppingCart object.
-	public Sale(ArrayList<SaleItem> saleItemList){ 
+	public Sale(ArrayList<SaleItem> saleItemList, double total){
 		this.saleItemList = saleItemList;
+		totalAmount = total;
 	}
 	
 	public double getTotalAmount(){
-		if(totalAmount==0)
-			for (SaleItem saleItem : saleItemList)
-				totalAmount+=saleItem.getUnitPrice();
 		return totalAmount;
 	}
 	

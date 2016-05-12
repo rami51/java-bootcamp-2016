@@ -22,7 +22,11 @@ public class ShoppingCartImpl implements ShoppingCart{
 	}
 
 	public Sale buy() {
-		return new Sale(saleItemList);
+		ArrayList<SaleItem> toReturn = new ArrayList<SaleItem>();
+		for (SaleItem saleItem : saleItemList) {
+			toReturn.add(saleItem);
+		}
+		return new Sale(toReturn, this.getTotal());
 	}
 
 	public double getTotal() {

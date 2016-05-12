@@ -3,14 +3,21 @@ package com.bootcamp.entities.impl;
 import com.bootcamp.entities.ShoppingCart;
 import com.bootcamp.entities.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
+@ApiModel(value = "The implementation of the User interface, which have the complete info for an user.")
 public class UserImpl implements User {
-	
+	@ApiModelProperty(value="The user identifier.")
 	private String idUser;
+	@ApiModelProperty(value="The user name.")
 	private String name;
+	@ApiModelProperty(value="The user's Identification Number Document.")
 	private int dni;
+	@ApiModelProperty(value="The user's Shopping Cart.")
 	private ShoppingCart cart;
 	@JsonIgnore
+	@ApiModelProperty(value="The user's password.")
 	private String password;
 	
 	public UserImpl(String idUser, String password, String name, int dni) {

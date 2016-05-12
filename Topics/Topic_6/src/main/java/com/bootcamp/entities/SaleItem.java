@@ -1,9 +1,17 @@
 package com.bootcamp.entities;
 
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value= "SaleItem Entity", description="Complete info of a SaleItem Entity")
 public class SaleItem {
+	@ApiModelProperty(value="A static field which increases by one when the class is instantiated.")
 	private static int lastId = 0;
+	@ApiModelProperty(value="The item identifier.")
 	private int idItem;
+	@ApiModelProperty(value="The item description.")
 	private String description;
+	@ApiModelProperty(value="The item unit price.")
 	private double unitPrice;
 
 
