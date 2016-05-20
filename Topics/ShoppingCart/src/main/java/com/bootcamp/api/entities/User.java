@@ -1,7 +1,9 @@
 package com.bootcamp.api.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,7 +27,7 @@ public class User {
 	@GeneratedValue
 	@JsonIgnore
 	private Integer idUser;
-	
+
 	@ApiModelProperty(value = "The username of the user.")
 	@Column(unique = true)
 	private String username;
@@ -34,20 +36,25 @@ public class User {
 	@JsonIgnore
 	private String password;
 
+	@JsonIgnore
 	@ApiModelProperty(value = "The cart of the user.")
-	@Autowired //is this right?
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "user")
+	@Autowired // is this right?
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
 	private Cart cart;
 
 	@ApiModelProperty(value = "The purchases of the user.")
 	@JsonIgnore
-	@Autowired //is this right?
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	@Autowired // is this right?
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Purchase> purchases;
 
 	@ApiModelProperty(value = "The email of the user.")
 	private String email;
-	
+
+	public User() {
+		cart = new Cart(this);
+		//purchases = new ArrayList<Purchase>();
+	}
 
 	public Integer getIdUser() {
 		return idUser;

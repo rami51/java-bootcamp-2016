@@ -1,5 +1,6 @@
 package com.bootcamp.api.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -7,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -18,6 +20,7 @@ public class Product {
 	@GeneratedValue
 	private Integer idProduct;
 
+	@JsonIgnore
 	@ApiModelProperty(value = "The category of the product.")
 	@JoinColumn(name = "idCategory")
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -31,6 +34,14 @@ public class Product {
 
 	@ApiModelProperty(value = "The available stock of the product.")
 	private Integer stock;
+	
+	public Product(){
+		
+	}
+	
+	public Product(Category category){
+		this.category = category;
+	}
 
 	public Integer getIdProduct() {
 		return idProduct;

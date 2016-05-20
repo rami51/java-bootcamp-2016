@@ -2,6 +2,7 @@ package com.bootcamp.api.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,9 +26,12 @@ public class Category {
 
 	@ApiModelProperty(value = "The product list of the category.")
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
 	private List<Product> products;
 
+	public Category(){
+	}
+	
 	public Integer getIdCategory() {
 		return idCategory;
 	}
@@ -64,7 +68,6 @@ public class Category {
 	public Product updateProduct(Product product){
 		Product toUpdate = this.getProduct(product.getIdProduct());
 		if (toUpdate != null) {
-			toUpdate.setCategory(product.getCategory());
 			toUpdate.setDescription(product.getDescription());
 			toUpdate.setPrice(product.getPrice());
 			toUpdate.setStock(product.getStock());

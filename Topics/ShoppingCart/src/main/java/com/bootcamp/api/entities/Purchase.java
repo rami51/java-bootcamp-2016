@@ -3,6 +3,7 @@ package com.bootcamp.api.entities;
 import java.sql.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,7 +22,7 @@ public class Purchase {
 	@ApiModelProperty(value = "The ID of the purchase.")
 	@Id
 	@GeneratedValue
-	private Long idPurchase;
+	private Integer idPurchase;
 
 	@ApiModelProperty(value = "The user owner of the purchase.")
 	@JsonIgnore
@@ -39,8 +40,11 @@ public class Purchase {
 	@ApiModelProperty(value = "The total amount of the purchase.")
 	private double total;
 
+	protected Purchase(){
+		
+	}
+	
 	public Purchase(User user, Date date, List<Product> products) {
-		super();
 		this.user = user;
 		this.date = date;
 		this.products = products;
@@ -57,7 +61,7 @@ public class Purchase {
 		this.date = date;
 	}
 
-	public Long getIdPurchase() {
+	public Integer getIdPurchase() {
 		return idPurchase;
 	}
 

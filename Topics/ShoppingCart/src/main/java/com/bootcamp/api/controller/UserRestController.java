@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bootcamp.api.entities.Cart;
 import com.bootcamp.api.entities.Product;
 import com.bootcamp.api.entities.Purchase;
 import com.bootcamp.api.entities.User;
 import com.bootcamp.api.services.ProductService;
+import com.bootcamp.api.services.PurchaseService;
 import com.bootcamp.api.services.UserService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -29,6 +32,8 @@ public class UserRestController {
 	private UserService userService;
 	@Autowired
 	private ProductService productService;
+	@Autowired
+	private PurchaseService purchaseService;
 	/*
 	 * public UsersRestController() { userService = new UserServiceImpl();
 	 * productService = new ProductServiceImpl(); }
@@ -40,7 +45,7 @@ public class UserRestController {
             @ApiResponse(code = 404, message = "User not found.")
     })
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<User> login(@RequestBody String username, @RequestBody String password) {
+	public ResponseEntity<User> login(@RequestParam String username, @RequestBody String password) {
 		try {
 			return new ResponseEntity<User>(userService.validate(username, password), HttpStatus.OK);
 		} catch (Exception e) {
@@ -54,8 +59,12 @@ public class UserRestController {
             @ApiResponse(code = 501, message = "Username is not available.")
     })
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity<User> register(@RequestBody User user) {
-		if (userService.isUsernameAvailable(user.getUsername())) {
+	public ResponseEntity<User> register(@RequestParam String username, @RequestBody String password, @RequestParam String email) {
+		if (userService.isUsernameAvailable(username)) {
+			User user = new User();
+			user.setUsername(username);
+			user.setPassword(password);
+			user.setEmail(email);
 			return new ResponseEntity<User>(userService.add(user), HttpStatus.CREATED);
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
@@ -68,8 +77,9 @@ public class UserRestController {
             @ApiResponse(code = 404, message = "User not found.")
     })
 	@RequestMapping(method = RequestMethod.DELETE)
-	public ResponseEntity<?> removeUser(@RequestBody User user){
-		if (userService.exists(user)) {
+	public ResponseEntity<?> removeUser(@RequestParam String username){
+		User user = userService.getByUsername(username);
+		if (user != null) {
 			userService.remove(user);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
@@ -82,8 +92,11 @@ public class UserRestController {
             @ApiResponse(code = 304, message = "User not updated.")
     })
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<User> updateUser(@RequestBody User user){
-			if (userService.isUsernameAvailable(user.getUsername())) {
+	public ResponseEntity<User> updateUser(@RequestParam String username, @RequestParam String email, @RequestBody String password){
+			User user = userService.getByUsername(username);
+			if (user!=null) {
+				user.setEmail(email);
+				user.setPassword(password);
 				return new ResponseEntity<User>(userService.update(user), HttpStatus.OK);
 			}else return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
 	}
@@ -115,20 +128,34 @@ public class UserRestController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
+	
+	@ApiOperation(value = "Get user's cart by its username", response = Cart.class, notes = "Returns the user's cart specified by its username.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "User found."),
+            @ApiResponse(code = 404, message = "User not found.")
+    })
+	@RequestMapping(value = "/{username}/cart", method = RequestMethod.GET)
+	public ResponseEntity<Cart> getCartByUsername(@PathVariable String username) {
+		User user = userService.getByUsername(username);
+		if (user != null) {
+			return new ResponseEntity<Cart>(user.getCart(), HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 
-	@ApiOperation(value = "Add to cart.", notes = "Adds a product to the cart of the specified user.")
+	@ApiOperation(value = "Add to cart.", response = Product.class, notes = "Adds a product to the cart of the specified user.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Product added correctly."),
             @ApiResponse(code = 501, message = "The username or the IDProduct aren't correct.")
     })
 	@RequestMapping(value = "/{username}/cart/{idProduct}", method = RequestMethod.POST)
-	public ResponseEntity<?> addToCart(@PathVariable String username, @PathVariable Integer idProduct) {
+	public ResponseEntity<Product> addToCart(@PathVariable String username, @PathVariable Integer idProduct) {
 		User user = userService.getByUsername(username);
 		Product product = productService.getById(idProduct);
 		if (product != null && user != null) {
 			user.getCart().add(product);
 			userService.update(user);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<Product>(product, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 	}
@@ -156,11 +183,11 @@ public class UserRestController {
             @ApiResponse(code = 501, message = "The username is not correct.")
     })
 	@RequestMapping(value = "/{username}/cart", method = RequestMethod.DELETE)
-	public ResponseEntity<User> clearCart(@PathVariable String username){
+	public ResponseEntity<Cart> clearCart(@PathVariable String username){
 		if (!userService.isUsernameAvailable(username)) {
 			User user = userService.getByUsername(username);
 			user.getCart().clear();
-			return new ResponseEntity<User>(userService.update(user), HttpStatus.OK);
+			return new ResponseEntity<Cart>(userService.update(user).getCart(), HttpStatus.OK);
 		} else return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 	}
 	
@@ -171,9 +198,10 @@ public class UserRestController {
     })
 	@RequestMapping(value = "/{username}/cart", method = RequestMethod.POST)
 	public ResponseEntity<Purchase> purchaseCartContent(@PathVariable String username){
-		if (!userService.isUsernameAvailable(username)) {
-			User user = userService.getByUsername(username);
+		User user = userService.getByUsername(username);
+		if (user !=null) {
 			Purchase purchase = user.getCart().buy();
+			purchaseService.add(purchase);
 			return new ResponseEntity<Purchase>(purchase, HttpStatus.OK);
 		}else return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 	}

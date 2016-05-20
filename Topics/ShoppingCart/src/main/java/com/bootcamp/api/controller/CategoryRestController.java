@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bootcamp.api.entities.Category;
 import com.bootcamp.api.entities.Product;
 import com.bootcamp.api.services.CategoryService;
+import com.bootcamp.api.services.ProductService;
 import com.wordnik.swagger.annotations.Api;
 
 @RestController
@@ -22,6 +24,9 @@ import com.wordnik.swagger.annotations.Api;
 public class CategoryRestController {
 	@Autowired
 	CategoryService categoryService;
+
+	@Autowired
+	ProductService productService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Category>> getAllCategories() {
@@ -33,10 +38,14 @@ public class CategoryRestController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE)
-	public ResponseEntity<?> removeCategory(@RequestBody Category category) {
-		Category categorytest = categoryService.getById(category.getIdCategory());
-		if (categorytest != null) {
-			categoryService.remove(category);
+	public ResponseEntity<?> removeCategory(@RequestParam Integer idCategory) {
+		Category category = categoryService.getById(idCategory);
+		if (category != null) {
+			try {
+				categoryService.remove(category);
+			} catch (Exception e) {
+				return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+			}
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -74,12 +83,16 @@ public class CategoryRestController {
 	}
 
 	@RequestMapping(value = "/{idCategory}/products", method = RequestMethod.POST)
-	public ResponseEntity<List<Product>> addProductToCategory(@PathVariable Integer idCategory, @RequestBody Product product) {
+	public ResponseEntity<List<Product>> addProductToCategory(@PathVariable Integer idCategory, @RequestParam String description,
+			@RequestParam Integer stock, @RequestParam double price) {
 		Category category = categoryService.getById(idCategory);
 		if (category != null) {
-			category.getProducts().add(product);
-			Category updated = categoryService.update(category);
-			return new ResponseEntity<List<Product>>(updated.getProducts(), HttpStatus.OK);
+			Product product = new Product(category);
+			product.setDescription(description);
+			product.setStock(stock);
+			product.setPrice(price);
+			productService.add(product);
+			return new ResponseEntity<List<Product>>(categoryService.getById(idCategory).getProducts(), HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 	}
@@ -89,18 +102,24 @@ public class CategoryRestController {
 		Category category = categoryService.getById(idCategory);
 		if (category != null) {
 			Product updatedProduct = category.updateProduct(product);
-			categoryService.update(category);
+			productService.update(updatedProduct);
 			return new ResponseEntity<Product>(updatedProduct, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
 	}
 
 	@RequestMapping(value = "/{idCategory}/products", method = RequestMethod.DELETE)
-	public ResponseEntity<?> removeProductFromCategory(@PathVariable Integer idCategory, @RequestBody Product product) {
+	public ResponseEntity<?> removeProductFromCategory(@PathVariable Integer idCategory, @RequestParam Integer idProduct) {
 		Category category = categoryService.getById(idCategory);
 		if (category != null) {
-			if (category.getProducts().remove(product)) {
-				categoryService.update(category);
+			Product product = category.getProduct(idProduct);
+			if (product != null) {
+				category.getProducts().remove(product);
+				try {
+					productService.remove(product);
+				} catch (Exception e) {
+					return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+				}
 				return new ResponseEntity<>(HttpStatus.OK);
 			} else
 				return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);

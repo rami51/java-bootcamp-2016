@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bootcamp.api.entities.Category;
 import com.bootcamp.api.entities.Product;
+import com.bootcamp.api.services.CategoryService;
 import com.bootcamp.api.services.ProductService;
 import com.wordnik.swagger.annotations.Api;
 
@@ -21,6 +24,9 @@ import com.wordnik.swagger.annotations.Api;
 public class ProductRestController {
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired 
+	private CategoryService categoryService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Product>> getAll() {
@@ -50,10 +56,12 @@ public class ProductRestController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Product> addProduct(@RequestBody Product product) {
+	public ResponseEntity<Product> addProduct(@RequestBody Product product, @RequestParam Integer idCategory) {
+		Category category = categoryService.getById(idCategory);
+		product.setCategory(category);
 		Product toReturn = productService.add(product);
 		if (toReturn != null) {
-			return new ResponseEntity<Product>(productService.add(product), HttpStatus.OK);
+			return new ResponseEntity<Product>(toReturn, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 	}
@@ -67,11 +75,13 @@ public class ProductRestController {
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)
-	public ResponseEntity<?> removeProduct (@RequestBody Product product){
+	public ResponseEntity<?> removeProduct (@RequestParam Integer idProduct){
+		Product product = productService.getById(idProduct);
+		try{
 		productService.remove(product);
+		}catch(Exception e){
+			return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
-
-
 }
